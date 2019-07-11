@@ -21,6 +21,8 @@ header {
 }
 
 main {
+    display: flex;
+    flex-wrap: wrap;
     background: #91b9ae;
 }
 
@@ -99,24 +101,20 @@ button:hover {
     border-radius: 3px;
 }
 
-main {
-    display: flex;
-    flex-wrap: wrap;
-}
-
 .post {
     display: flex;
-    justify-content: space-between;
     margin: 10px 0;
     padding: 10px;
     background: #F8F1E1;
     box-shadow: 0 0 10px 2px #719188c4;
+    width: 100%;
 }
 
 .post-text {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    flex-grow: 1;
     margin: 0 20px;
 }
 
@@ -158,7 +156,7 @@ main {
 }
 
 .remove {
-    justify-self: end;
+    justify-self: flex-end;
     height: 25px;
     background: #91b9ae;
     cursor: pointer;
