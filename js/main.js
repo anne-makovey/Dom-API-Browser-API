@@ -1,6 +1,7 @@
 const url = 'https://api.myjson.com/bins/152f9j';
 var indexTen = 0;
 var index = 0;
+var isSearch = false;
 var posts= [];
 
 fetch(url)
@@ -26,13 +27,23 @@ fetch(url)
 
 /* Adding 10 Posts */
 function addTenPosts() {
-    for (i=(indexTen*10); i < (indexTen+1)*10;i++) {
-        if (posts[i] != null)  
-        displayedPosts(posts[i]);
+    var counter = 0;
+    for (i=index; i < posts.length ;i++) {
+        if (posts[i] != null && !isSearch) {
+            counter++;
+            displayedPosts(posts[i]);
+        }
+        else if (isSearch) {
+            if (posts[i].title.includes(search_field.value)) {
+                displayedPosts(posts[i]);
+                counter++;
+            }
+        }
+        if (counter == 10)
+            break;
     }
-    indexTen++;
+    index = i;
 }
-
 
 function displayedPosts(post) {
     /* Div */
@@ -103,7 +114,7 @@ function rewritePosts() {
     while(elem.length > 0){
         elem[0].parentNode.removeChild(elem[0]);
     }
-    indexTen = 0;
+    index = 0;
     addTenPosts();
 }
 
@@ -131,3 +142,23 @@ function sortOldestFirst(a, b) {
     return date1 - date2;
 }
 
+/* Search function */
+search_field.onkeyup = function() {
+    var elem = document.getElementsByClassName('post');
+    if (search_field.value != "")
+        isSearch = true;
+    while(elem.length > 0){
+        elem[0].parentNode.removeChild(elem[0]);
+    }
+    index = 0;
+    counter = 0;
+    for (i=0; i < posts.length; i++) {
+        if (posts[i].title.includes(search_field.value)) {
+            displayedPosts(posts[i]);
+            counter++;
+        }
+        if (counter == 10)
+            break;
+    }
+    index = i;
+}
