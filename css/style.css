@@ -52,16 +52,16 @@ main {
 
 #search_submit {
     height: 100%;
-    width: 40px;
-    cursor: pointer;
+    color: #F8F1E1;
+    padding: 10px;
     }
   
-#search_submit:before {
+/* #search_submit:before {
     content: "\f002";
     font-family: FontAwesome;
     font-size: 16px;
     color: #F8F1E1;
-}
+} */
 
 #search_field::placeholder {
     color: #F8F1E1;
