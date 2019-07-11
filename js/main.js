@@ -24,6 +24,7 @@ fetch(url)
     console.log(JSON.stringify(error));
 });
 
+/* Adding 10 Posts */
 function addTenPosts() {
     for (i=(indexTen*10); i < (indexTen+1)*10;i++) {
         if (posts[i] != null)  
@@ -32,24 +33,29 @@ function addTenPosts() {
     indexTen++;
 }
 
+
 function displayedPosts(post) {
     /* Div */
-    var div = document.createElement('div');
-    div.className = 'post';
-    document.getElementsByTagName('main')[0].appendChild(div);
+    var divMain = document.createElement('div');
+    divMain.className = 'post';
+    document.getElementsByTagName('main')[0].appendChild(divMain);
     /* Image */
     var image = document.createElement('img');
     image.className = 'img';
     image.src = post.image;
     image.alt = post.title;
-    div.appendChild(image);
+    divMain.appendChild(image);
+    /* Div */
+    var div = document.createElement('div');
+    div.className = 'post-text';
+    divMain.appendChild(div);
     /* Title */
     var h1 = document.createElement('h1');
     h1.className = 'title';
     h1.innerText = post.title;
     div.appendChild(h1);
     /* Date */
-    var date = document.createElement('date');
+    var date = document.createElement('span');
     date.className = 'date';
     dateUTC = new Date(post.createdAt);
     date.innerText = dateUTC.toUTCString();
@@ -70,18 +76,26 @@ function displayedPosts(post) {
     descr.innerText = post.description;
     div.appendChild(descr);
     /* Remove */
-    var remove = document.createElement('button');
-    remove.className = 'remove';
-    div.appendChild(remove);
+    var removeButton = document.createElement('button');
+    removeButton.className = 'remove';
+    removeButton.onclick = function() {
+        divMain.parentNode.removeChild(divMain);
+        for (i=0; i < posts.length; i++) {
+            if (posts[i].title == post.title) 
+            posts.splice(i, 1);
+        }
+    };
+    divMain.appendChild(removeButton);
 }
 
+/* Loading new 10 posts */
 window.addEventListener('scroll', function() {
     if (document.body.scrollHeight - window.pageYOffset <= window.innerHeight + 400) {
             addTenPosts();
         }
 });
 
-
+/* Shows only 10 posts again */
 initial_state.onclick = rewritePosts;
 
 function rewritePosts() {
@@ -93,6 +107,7 @@ function rewritePosts() {
     addTenPosts();
 }
 
+/* Sort by date */
 sort_by_date.onchange = function(){
     var value = document.getElementById('sort_by_date');
     if (value.options[value.selectedIndex].value == 'newest') {
@@ -115,3 +130,12 @@ function sortOldestFirst(a, b) {
     var date2 = new Date(b.createdAt);
     return date1 - date2;
 }
+
+/* Delete post from page */
+/* remove.onclick = function() {
+    var elem = document.getElementsByClassName('remove');
+    while(elem.length > 0){
+        elem[0].parentNode.removeChild(elem[0]);
+    }
+}
+ */
