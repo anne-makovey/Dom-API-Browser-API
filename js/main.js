@@ -1,54 +1,84 @@
 const url = 'https://api.myjson.com/bins/152f9j';
+var indexTen = 0;
 var index = 0;
+var posts= [];
+
 fetch(url)
-    .then(res => res.json())
-    .then(data => {
-        const rawData = data.data;
-        return rawData.map(post => {
-            /* all needed data is listed below as an entity */ 
+.then(res => res.json())
+.then(data => {
+    posts = data.data;
+    //return rawData/*(post => {
+        /* all needed data is listed below as an entity 
             let createdAt = post.createdAt;
-                description = post.description;
-                img = post.image;
-                tags = post.tags;
-                title = post.title;
-            
-            /* Div */
-            var div = document.createElement('div');
-            div.className = 'post';
-            document.getElementsByTagName('main')[0].appendChild(div);
-            /* Image */
-            var image = document.createElement('img');
-            image.className = 'img';
-            image.src = post['image'];
-            image.alt = post['title'];
-            div.appendChild(image);
-            /* Title */
-            var h1 = document.createElement('h1');
-            h1.className = 'title';
-            h1.innerText = title;
-            div.appendChild(h1);
-            /* Date */
-            var date = document.createElement('date');
-            date.className = 'date';
-            date.innerText = createdAt;
-            div.appendChild(date);
-            /* Tags */
-            var tag_list = document.createElement('ul')
-            tag_list.className = 'tag-list';
-            div.appendChild(tag_list);
-            tags.forEach(function(item, index, tags) {
-                var tag = document.createElement('li');
-                tag.className = 'tag';
-                tag.innerText = tags[index];
-                tag_list.appendChild(tag);
-            });
-            /* Description */
-            var descr = document.createElement('p');
-            descr.className = 'description';
-            descr.innerText = description;
-            div.appendChild(descr);
-        });
-    })
-    .catch((error) => {
-        console.log(JSON.stringify(error));
+            description = post.description;
+            img = post.image;
+            tags = post.tags;
+            title = post.title;
+           */
+        //});
+    AddTenPosts();
+})
+.catch((error) => {
+    console.log(JSON.stringify(error));
+});
+
+function AddTenPosts()
+{
+    for (i=(indexTen*10); i < (indexTen+1)*10;i++)
+    {
+        displayedPosts(posts[i]);
+    }
+    indexTen++;
+}
+
+function displayedPosts(post) {
+    /* Div */
+    var div = document.createElement('div');
+    div.className = 'post';
+    document.getElementsByTagName('main')[0].appendChild(div);
+    /* Image */
+    var image = document.createElement('img');
+    image.className = 'img';
+    image.src = post.image;
+    image.alt = post.title;
+    div.appendChild(image);
+    /* Title */
+    var h1 = document.createElement('h1');
+    h1.className = 'title';
+    h1.innerText = post.title;
+    div.appendChild(h1);
+    /* Date */
+    var date = document.createElement('date');
+    date.className = 'date';
+    dateUTC = new Date(post.createdAt);
+    date.innerText = dateUTC.toUTCString();
+    div.appendChild(date);
+    /* Tags */
+    var tag_list = document.createElement('ul');
+    tag_list.className = 'tag-list';
+    div.appendChild(tag_list);
+    post.tags.forEach(function(item, index, tags) {
+        var tag = document.createElement('li');
+        tag.className = 'tag';
+        tag.innerText = tags[index];
+        tag_list.appendChild(tag);
     });
+    /* Description */
+    var descr = document.createElement('p');
+    descr.className = 'description';
+    descr.innerText = post.description;
+    div.appendChild(descr);
+    /* Remove */
+    var remove = document.createElement('button');
+    remove.className = 'remove';
+    div.appendChild(remove);
+}
+
+window.addEventListener('scroll', function()
+{
+    if (window.scrollHeight - window.scrollTop === window.clientHeight)
+    {
+        console.log(indexTen);
+        AddTenPosts();
+    }
+});
