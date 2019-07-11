@@ -131,11 +131,3 @@ function sortOldestFirst(a, b) {
     return date1 - date2;
 }
 
-/* Delete post from page */
-/* remove.onclick = function() {
-    var elem = document.getElementsByClassName('remove');
-    while(elem.length > 0){
-        elem[0].parentNode.removeChild(elem[0]);
-    }
-}
- */
