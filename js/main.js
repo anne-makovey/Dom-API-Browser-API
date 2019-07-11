@@ -16,16 +16,16 @@ fetch(url)
             title = post.title;
            */
         //});
-    AddTenPosts();
+
+    posts.sort(sortNewestFirst);
+    addTenPosts();
 })
 .catch((error) => {
     console.log(JSON.stringify(error));
 });
 
-function AddTenPosts()
-{
-    for (i=(indexTen*10); i < (indexTen+1)*10;i++)
-    {
+function addTenPosts() {
+    for (i=(indexTen*10); i < (indexTen+1)*10;i++) {
         if (posts[i] != null)  
         displayedPosts(posts[i]);
     }
@@ -76,18 +76,42 @@ function displayedPosts(post) {
 }
 
 window.addEventListener('scroll', function() {
-    if (document.body.scrollHeight - window.pageYOffset <= window.innerHeight + 200)
-        {
-            AddTenPosts();
+    if (document.body.scrollHeight - window.pageYOffset <= window.innerHeight + 400) {
+            addTenPosts();
         }
 });
 
 
-initial_state.onclick = function() {
+initial_state.onclick = rewritePosts;
+
+function rewritePosts() {
     var elem = document.getElementsByClassName('post');
     while(elem.length > 0){
         elem[0].parentNode.removeChild(elem[0]);
     }
     indexTen = 0;
-    AddTenPosts();
+    addTenPosts();
+}
+
+sort_by_date.onchange = function(){
+    var value = document.getElementById('sort_by_date');
+    if (value.options[value.selectedIndex].value == 'newest') {
+        posts.sort(sortNewestFirst);
+    }
+    if (value.options[value.selectedIndex].value == 'oldest') {
+        posts.sort(sortOldestFirst);
+    }
+    rewritePosts();
+}
+
+function sortNewestFirst(a, b) {
+    var date1 = new Date(a.createdAt);
+    var date2 = new Date(b.createdAt);
+    return date2 - date1;
+}
+
+function sortOldestFirst(a, b) {
+    var date1 = new Date(a.createdAt);
+    var date2 = new Date(b.createdAt);
+    return date1 - date2;
 }
