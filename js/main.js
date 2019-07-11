@@ -26,6 +26,7 @@ function AddTenPosts()
 {
     for (i=(indexTen*10); i < (indexTen+1)*10;i++)
     {
+        if (posts[i] != null)  
         displayedPosts(posts[i]);
     }
     indexTen++;
@@ -74,11 +75,19 @@ function displayedPosts(post) {
     div.appendChild(remove);
 }
 
-window.addEventListener('scroll', function()
-{
-    if (window.scrollHeight - window.scrollTop === window.clientHeight)
-    {
-        console.log(indexTen);
-        AddTenPosts();
-    }
+window.addEventListener('scroll', function() {
+    if (document.body.scrollHeight - window.pageYOffset <= window.innerHeight + 200)
+        {
+            AddTenPosts();
+        }
 });
+
+
+initial_state.onclick = function() {
+    var elem = document.getElementsByClassName('post');
+    while(elem.length > 0){
+        elem[0].parentNode.removeChild(elem[0]);
+    }
+    indexTen = 0;
+    AddTenPosts();
+}
